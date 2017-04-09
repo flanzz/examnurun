@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid</title>
+    <meta name="description" content="Blueprint: Blueprint: Google Grid Gallery" />
+    <meta name="keywords" content="google getting started gallery, image gallery, image grid, template, masonry" />
+    
+    <link rel="stylesheet" type="text/css" href="css/component.css" />
+    <script type="text/javascript" src="js/jquery.bpopup.min.js"></script>
+    <script src="js/modernizr.custom.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div id="grid-gallery" class="grid-gallery">
+            <section class="grid-wrap">
+                <ul class="grid">
+                    <li class="grid-sizer"></li>
+                    <!-- for Masonry column width -->
+                </ul>
+            </section>
+            <!-- // grid-wrap -->
+            <section class="slideshow">
+                <ul> </ul>
+                <nav> <span class="icon nav-prev"></span> <span class="icon nav-next"></span> <span class="icon nav-close"></span> </nav>
+                <div class="info-keys icon">Navigate with arrow keys</div>
+            </section>
+            <!-- // slideshow -->
+        </div>
+        <!-- // grid-gallery -->
+    </div>
+    <script src="js/imagesloaded.pkgd.min.js"></script>
+    <script src="js/masonry.pkgd.min.js"></script>
+    <script src="js/classie.js"></script>
+    <script src="js/cbpGridGallery.js"></script>
+    <script>
+        var slide = new CBPGridGallery(document.getElementById('grid-gallery'));
+        $.ajax({
+            url: 'controlador/grid.php'
+            , type: 'POST'
+            , processData: false, // tell jQuery not to process the data
+            contentType: false, // tell jQuery not to set contentType
+            success: function (data) {
+                data = data.split('?');
+                console.log("grid");
+                for (var i = 0; i < data.length - 1; i++) {
+                    data[i] = data[i].replace("../", "");
+                    $("ul.grid").append('<li style="list-style:none"><figure><img src='+data[i]+' alt="GIF"/><figcaption><h3>GIF</h3> <div class="fb-share-button" data-href="http://examnurun.hol.es/'+data[i]+'" data-layout="button_count"></div><div id="accepted"></div></figcaption></figure></li>');
+                    var item = document.getElementById("gif");
+                    $(".slideshow ul").append("<li style='list-style:none' class='thumb"+i+"'><figure><figcaption><h3>Thumbnail</h3></figcaption><img src="+data[i]+" alt='THUMB'/></figure></li>");
+                }
+                $('ul.grid li').each(function (n) {
+                    var current = this;
+                    current.addEventListener("click", function(){
+                        $(".thumb"+(n-1)).bPopup({
+                            follow: [false, false], //x, y
+                            fadeSpeed: 'slow', //can be a string ('slow'/'fast') or int
+                            followSpeed: 1000, //can be a string ('slow'/'fast') or int
+                            modalColor: '#8c8c8c'
+                        });
+                    });
+                }); 
+            }
+        });
+        
+    </script>
+</body>
+
+</html>

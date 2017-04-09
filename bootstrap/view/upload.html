@@ -1,0 +1,28 @@
+<form enctype="multipart/form-data" id="formuploadajax" method="post">
+    <input type="file" id="file" name="file" accept="image/*.gif" />
+    <br />
+    <input type="button" value="Subir archivos" id="btupload" /> 
+</form>
+<div id="mensaje"></div>
+
+<script>
+    
+    $(document).ready(function(){
+        $("#btupload").off("click").on("click", function(e){
+            var formData = new FormData();
+            var data = $('#file')[0].files[0];
+            formData.append('file', data);
+            console.log(data);
+            $.ajax({
+                   url : 'controlador/upload.php',
+                   type : 'POST',
+                   data : formData,
+                   processData: false,  // tell jQuery not to process the data
+                   contentType: false,  // tell jQuery not to set contentType
+                   success : function(data) {
+                      alert(data);
+                   }
+            });
+        });
+    });
+</script>
